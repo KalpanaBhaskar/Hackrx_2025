@@ -1,0 +1,18 @@
+name: Sync to HF Space
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sync-to-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push to HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git push -f https://kb-916:$HF_TOKEN@huggingface.co/spaces/kb-916/bajaj_file main
