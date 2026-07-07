@@ -1,0 +1,5 @@
+prev_versions/
+.git/
+__pycache__/
+*.pyc
+.env

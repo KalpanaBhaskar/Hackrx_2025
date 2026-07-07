@@ -4,13 +4,13 @@ from config import settings
 
 class GenerationService:
     def __init__(self):
-        # xAI's chat completion endpoint
-        self.api_url = "https://api.x.ai/v1/chat/completions"
+        # groq's chat completion endpoint
+        self.api_url = "https://api.groq.com/openai/v1/chat/completions"
 
     async def get_answer(self, question: str, evidence_context: List[str]) -> str:
-        """Dispatches an async generation prompt containing text extracts to Grok."""
-        if not settings.GROK_API_KEY:
-            return "Configuration Error: GROK_API_KEY missing from environment."
+        """Dispatches an async generation prompt containing text extracts to Groq."""
+        if not settings.GROQ_API_KEY:
+            return "Configuration Error: GROQ_API_KEY missing from environment."
 
         context_payload = "\n\n".join(evidence_context)
         
@@ -24,7 +24,7 @@ class GenerationService:
         user_prompt = f"**Policy Text:**\n---\n{context_payload}\n---\n\n**Question:** {question}"
 
         payload = {
-            "model": settings.GROK_MODEL_NAME,
+            "model": settings.GROQ_MODEL_NAME,
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
@@ -33,7 +33,7 @@ class GenerationService:
         }
         
         headers = {
-            "Authorization": f"Bearer {settings.GROK_API_KEY}",
+            "Authorization": f"Bearer {settings.GROQ_API_KEY}",
             "Content-Type": "application/json"
         }
 
@@ -42,7 +42,7 @@ class GenerationService:
                 response = await client.post(self.api_url, json=payload, headers=headers)
                 response.raise_for_status()
                 data = response.json()
-                # Grok returns data in the standard OpenAI format
+                # Groq returns data in the standard OpenAI format
                 return data['choices'][0]['message']['content'].strip()
             except Exception as e:
                 return f"Error: Could not retrieve a synchronized context extraction answer. Details: {str(e)}"

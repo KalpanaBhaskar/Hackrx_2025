@@ -27,3 +27,4 @@ class VectorStorageService:
         # Avoid index errors if fewer chunks exist than top_k elements requested
         valid_indices = [i for i in indices[0] if i < len(text_chunks)]
         return [text_chunks[i] for i in valid_indices]
+    

@@ -1,7 +1,9 @@
 fastapi
-uvicorn
+uvicorn[standard]
 sentence-transformers
 faiss-cpu
 httpx
 PyMuPDF
-requests
+pydantic-settings
+python-dotenv
+numpy

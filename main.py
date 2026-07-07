@@ -30,6 +30,11 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Root health check
+@app.get("/")
+async def health_check():
+    return {"status": "ok", "message": "Hackathon Q&A Engine is running!"}
+
 # Attach routes
 app.include_router(router)
 
